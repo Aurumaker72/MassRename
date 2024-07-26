@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="30"
+             x:Class="MassRename.Views.Avalonia.Controls.FileCollectionSelectionControl">
+    <Grid RowDefinitions="Auto, *">
+
+        <Grid ColumnDefinitions="*, Auto">
+            <TextBox Margin="0 0 2 0" MinWidth="260" />
+            <Button Grid.Column="1" Content="Browse..." />
+        </Grid>
+        <ListBox Grid.Row="1" Margin="0 2 0 0" SelectionMode="Multiple">
+            <ListBox.Items>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+                <x:String>music.mp3</x:String>
+                <x:String>something.mp3</x:String>
+            </ListBox.Items>
+        </ListBox>
+    </Grid>
+</UserControl>

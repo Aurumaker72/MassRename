@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MassRename.Views.Avalonia.Controls.BulkRenameControl">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <TextBox MinWidth="260" IsReadOnly="True" Text="taylor swift alcoholic" />
+        <TextBlock Margin="0 8 0 0" Text="Rename to..." TextAlignment="Center" />
+        <ItemsControl Margin="0 6 0 0">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Margin="0 2 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.Items>
+                <x:String>Taylor Swift - Alcoholic</x:String>
+                <x:String>Alcoholic - Taylor Swift</x:String>
+            </ItemsControl.Items>
+        </ItemsControl>
+        
+        <TextBlock Margin="0 8 0 0" Opacity="50" Text="... or use a custom name" TextAlignment="Center" />
+
+        <TextBox Margin="0 8 0 0"></TextBox>
+        
+        <Button Margin="0 8 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="Skip renaming"/>
+    </StackPanel>
+</UserControl>

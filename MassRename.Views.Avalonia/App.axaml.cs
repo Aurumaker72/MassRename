@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-namespace MassRename;
+namespace MassRename.Views.Avalonia;
 
 public partial class App : Application
 {

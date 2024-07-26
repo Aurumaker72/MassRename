@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace MassRename;
+namespace MassRename.Views.Avalonia;
 
 class Program
 {

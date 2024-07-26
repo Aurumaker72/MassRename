@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace MassRename;
+namespace MassRename.Views.Avalonia;
 
 public partial class MainWindow : Window
 {

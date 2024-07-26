@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassRename", "MassRename\MassRename.csproj", "{4E72BF42-7D12-41B6-BBBC-8E7C316D07F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassRename.Views.Avalonia", "MassRename.Views.Avalonia\MassRename.Views.Avalonia.csproj", "{4E72BF42-7D12-41B6-BBBC-8E7C316D07F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
