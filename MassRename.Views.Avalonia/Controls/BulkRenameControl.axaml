@@ -2,30 +2,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:MassRename.ViewModels;assembly=MassRename.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              d:DesignWidth="500"
              d:DesignHeight="550"
-             x:Class="MassRename.Views.Avalonia.Controls.BulkRenameControl">
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-        <TextBlock TextAlignment="Center" FontSize="16" Text="Renaming file 5 out of 203"/>
-        <TextBox Margin="0 8 0 0" MinWidth="320" IsReadOnly="True" Text="taylor swift alcoholic" />
+             x:Class="MassRename.Views.Avalonia.Controls.BulkRenameControl"
+             x:DataType="viewModels:BulkRenameViewModel"
+             Name="Root">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="320">
+        <TextBlock TextAlignment="Center" FontSize="16">
+            <Run Text="Renaming file" />
+            <Run Text="{Binding CurrentIndex, Converter={StaticResource AddConverter}, ConverterParameter=1}" />
+            <Run Text="out of" />
+            <Run Text="{Binding FileCount}" />
+        </TextBlock>
+        <TextBox Margin="0 8 0 0" MinWidth="320" IsReadOnly="True" Text="{Binding CurrentFile}" />
         <TextBlock Margin="0 8 0 0" Text="Rename to..." TextAlignment="Center" />
-        <ItemsControl Margin="0 6 0 0">
+        <ItemsControl Margin="0 6 0 0" ItemsSource="{Binding NameSuggestions}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Margin="0 2 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="{Binding}" />
+                    <Button Margin="0 2 0 0" HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Content="{Binding}"
+                            Command="{Binding #Root.((viewModels:BulkRenameViewModel)DataContext).ApplyCommand}"
+                            CommandParameter="{Binding}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            <ItemsControl.Items>
-                <x:String>Taylor Swift - Alcoholic</x:String>
-                <x:String>Alcoholic - Taylor Swift</x:String>
-            </ItemsControl.Items>
         </ItemsControl>
-        
+
         <TextBlock Margin="0 8 0 0" Opacity="50" Text="... or use a custom name" TextAlignment="Center" />
 
-        <TextBox Margin="0 8 0 0"></TextBox>
-        
-        <Button Margin="0 8 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="Skip renaming"/>
+        <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
+            <TextBox x:Name="CustomNameTextBox" MaxLines="1" KeyUp="CustomNameTextBox_OnKeyUp" />
+            <Button Margin="2 0 0 0" Grid.Column="1" Content="Apply" Click="ApplyButton_OnClick" />
+        </Grid>
+
+        <Button Margin="0 8 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                Command="{Binding SkipByCommand}" Content="Skip renaming">
+            <Button.CommandParameter>
+                <x:Int32>1</x:Int32>
+            </Button.CommandParameter>
+        </Button>
     </StackPanel>
 </UserControl>

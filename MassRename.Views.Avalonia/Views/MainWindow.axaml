@@ -3,18 +3,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:MassRename.Views.Avalonia.Controls"
+        xmlns:views="clr-namespace:MassRename.Views.Avalonia.Views"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:viewModels="clr-namespace:MassRename.ViewModels;assembly=MassRename.ViewModels"
         mc:Ignorable="d"
-        x:Class="MassRename.Views.Avalonia.MainWindow"
+        x:Class="MassRename.Views.Avalonia.Views.MainWindow"
         Width="500"
         Height="550"
         d:DesignWidth="500"
         d:DesignHeight="550"
-        Title="MassRename.Views.Avalonia">
-
+        x:DataType="system:Object"
+        Title="{Binding}">
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <controls:FileCollectionSelectionControl />
+        <ContentControl Content="{Binding}">
+            <ContentControl.DataTemplates>
+                <DataTemplate DataType="viewModels:FileCollectionSelectionViewModel">
+                    <controls:FileCollectionSelectionControl DataContext="{Binding}" />
+                </DataTemplate>
+                <DataTemplate DataType="viewModels:BulkRenameViewModel">
+                    <controls:BulkRenameControl DataContext="{Binding}" />
+                </DataTemplate>
+            </ContentControl.DataTemplates>
+        </ContentControl>
     </Grid>
-    <!-- <Grid HorizontalAlignment="Center" VerticalAlignment="Top"> -->
-    <!--     <controls:BulkRenameControl /> -->
-    <!-- </Grid> -->
 </Window>
