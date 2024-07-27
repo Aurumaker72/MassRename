@@ -1,5 +1,6 @@
 using MassRename.Services;
 using NSubstitute;
+using Xunit.Abstractions;
 
 namespace MassRename.ViewModels.Tests;
 
@@ -83,6 +84,35 @@ public class BulkRenameViewModel_Tests
         bulkRenameViewModel.SkipByCommand.Execute(skipSize);
 
         Assert.Equal(items[skipSize], bulkRenameViewModel.CurrentFile);
+    }
+
+    [Theory]
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, -1)]
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, -2)]
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, -3)]
+    public void Test_CurrentItemMatchesDataAfterSkipBackwards(IList<string> items, int skipSize)
+    {
+        var bulkRenameViewModel = new BulkRenameViewModel(items.ToList(), null);
+
+        bulkRenameViewModel.SkipByCommand.Execute(items.Count - 1);
+        bulkRenameViewModel.SkipByCommand.Execute(skipSize);
+
+        Assert.Equal(items[^(-skipSize + 1)], bulkRenameViewModel.CurrentFile);
+    }
+
+    [Theory]
+    [InlineData("abc")]
+    [InlineData("abc", "def")]
+    [InlineData("abc", "def", "ghi")]
+    [InlineData("abc", "def", "ghi", "jkl")]
+    public void Test_SkipBackwardsIsClamped(params string[] items)
+    {
+        var bulkRenameViewModel = new BulkRenameViewModel(items.ToList(), null);
+
+        bulkRenameViewModel.SkipByCommand.Execute(items.Length - 1);
+        bulkRenameViewModel.SkipByCommand.Execute(-1000);
+
+        Assert.Equal(items[0], bulkRenameViewModel.CurrentFile);
     }
 
     [Theory]
