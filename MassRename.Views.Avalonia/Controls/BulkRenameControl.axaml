@@ -31,18 +31,18 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
+        <Button Margin="0 2 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                Command="{Binding SkipByCommand}" Content="Keep original">
+            <Button.CommandParameter>
+                <x:Int32>1</x:Int32>
+            </Button.CommandParameter>
+        </Button>
+        
         <TextBlock Margin="0 8 0 0" Opacity="50" Text="... or use a custom name" TextAlignment="Center" />
 
         <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
             <TextBox x:Name="CustomNameTextBox" MaxLines="1" KeyUp="CustomNameTextBox_OnKeyUp" />
             <Button Margin="2 0 0 0" Grid.Column="1" Content="Apply" Click="ApplyButton_OnClick" />
         </Grid>
-
-        <Button Margin="0 8 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                Command="{Binding SkipByCommand}" Content="Skip renaming">
-            <Button.CommandParameter>
-                <x:Int32>1</x:Int32>
-            </Button.CommandParameter>
-        </Button>
     </StackPanel>
 </UserControl>
