@@ -51,7 +51,11 @@ public partial class BulkRenameViewModel : ObservableObject
     /// <summary>
     /// Skips the specified amount of entries
     /// </summary>
-    /// <param name="entries">The amount of entries to skip</param>
+    /// <param name="entries">
+    /// The amount of entries to skip.
+    /// Skipping beyond the last element will navigate to the default ViewModel,
+    /// and skipping to before the first element will be clamped.
+    /// </param>
     [RelayCommand]
     private void SkipBy(int entries)
     {
@@ -61,7 +65,7 @@ public partial class BulkRenameViewModel : ObservableObject
             return;
         }
 
-        CurrentIndex += entries;
+        CurrentIndex = Math.Max(0, CurrentIndex + entries);
         NameSuggestions = ComputeSuggestions(CurrentFile).ToArray();
 
         OnPropertyChanged(nameof(CurrentIndex));
