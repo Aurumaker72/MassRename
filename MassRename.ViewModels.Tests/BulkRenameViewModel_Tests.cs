@@ -42,7 +42,7 @@ public class BulkRenameViewModel_Tests
     }
 
     [Fact]
-    public void Test_ApplySwitchesToDefaultViewModelWhenAtEnd()
+    public void Test_ApplySwitchesToDefaultViewModelWhenApplyingAtEnd()
     {
         var navigationService = Substitute.For<INavigationService>();
         var bulkRenameViewModel = new BulkRenameViewModel(["abc.mp3", "def.flac", "ghi.ogg"], navigationService);
@@ -53,5 +53,39 @@ public class BulkRenameViewModel_Tests
 
         navigationService.Received(1)
             .SwitchTo(Arg.Is<FileCollectionSelectionViewModel>(vm => vm == null));
+    }
+
+    [Theory]
+    [InlineData(3)]
+    [InlineData(50)]
+    [InlineData(100)]
+    public void Test_SkipSwitchesToDefaultViewModelPastEnd(int skipSize)
+    {
+        var navigationService = Substitute.For<INavigationService>();
+        var bulkRenameViewModel = new BulkRenameViewModel(["abc.mp3", "def.flac", "ghi.ogg"], navigationService);
+
+        bulkRenameViewModel.SkipByCommand.Execute(skipSize);
+
+        navigationService.Received(1)
+            .SwitchTo(Arg.Is<FileCollectionSelectionViewModel>(vm => vm == null));
+    }
+
+    [Theory]
+    [InlineData("-", new[] { "" })]
+    [InlineData(" -", new[] { "" })]
+    [InlineData(" - ", new[] { "" })]
+    [InlineData(" -  ", new[] { "" })]
+    [InlineData("Lorem - Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
+    [InlineData("Lorem -Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
+    [InlineData("Lorem-Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
+    [InlineData("Lorem  -    Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
+    [InlineData("Lorem Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem Ipsum" })]
+    [InlineData("Lorem", new[] { "@artist - Lorem" })]
+    [InlineData("Lorem Ipsum Dolor", new[] { "Lorem - Ipsum Dolor", "Lorem - Ipsum (Dolor)", "Lorem Ipsum - Dolor", "@artist - Lorem Ipsum Dolor" })]
+    public void Test_ValidateSuggestions(string name, ICollection<string> suggestions)
+    {
+        var bulkRenameViewModel = new BulkRenameViewModel([name], null);
+
+        Assert.Equal(bulkRenameViewModel.NameSuggestions, suggestions);
     }
 }
