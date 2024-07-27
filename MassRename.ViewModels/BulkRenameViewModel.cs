@@ -69,6 +69,8 @@ public partial class BulkRenameViewModel : ObservableObject
         OnPropertyChanged(nameof(NameSuggestions));
     }
 
+    #region Suggestion generation
+
     [GeneratedRegex(@"\s{2,}")]
     private static partial Regex WhitespaceCompressorRegex();
 
@@ -80,12 +82,12 @@ public partial class BulkRenameViewModel : ObservableObject
     private List<string> ComputeSuggestions(string name)
     {
         List<string> suggestions = [];
-        
+
         if (string.IsNullOrWhiteSpace(name))
         {
             return suggestions;
         }
-        
+
         AppendSuggestion_DashSeparated(suggestions, name);
         AppendSuggestion_SeparatorlessAndIncomplete(suggestions, name);
 
@@ -99,6 +101,7 @@ public partial class BulkRenameViewModel : ObservableObject
         {
             return;
         }
+
         var parts = computed.Split('-');
 
         if (parts.Length == 2)
@@ -124,6 +127,7 @@ public partial class BulkRenameViewModel : ObservableObject
         {
             return;
         }
+
         var parts = computed.Split(' ');
 
         if (name.Contains('-')) return; // Skip if the name already contains a dash
@@ -149,4 +153,6 @@ public partial class BulkRenameViewModel : ObservableObject
             suggestions.Add($"@artist - {computed}");
         }
     }
+
+    #endregion
 }
