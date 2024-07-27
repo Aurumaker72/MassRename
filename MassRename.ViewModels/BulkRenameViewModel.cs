@@ -81,39 +81,59 @@ public partial class BulkRenameViewModel : ObservableObject
     {
         List<string> suggestions = [];
 
-        suggestions.AddRange(ComputeSuggestion_SpacedFused(name));
+        AppendSuggestion_DashSeparated(suggestions, name);
+        AppendSuggestion_SeparatorlessAndIncomplete(suggestions, name);
 
         return suggestions;
     }
 
-    private List<string> ComputeSuggestion_SpacedFused(string name)
+    private void AppendSuggestion_DashSeparated(List<string> suggestions, string name)
     {
-        // 1. Compress repeated spcaes before splitting
-        var computed = WhitespaceCompressorRegex().Replace(name, "");
+        var computed = WhitespaceCompressorRegex().Replace(name, " ").Trim();
+        var parts = computed.Split('-');
 
-        // 2. Split the string by spaces
-        var parts = computed.Split(' ');
-
-        // 3. If there are 2 or less segments, we bail
-        if (parts.Length < 2)
-        {
-            return [];
-        }
-
-        // 4. Exactly two segments, we can keep it
         if (parts.Length == 2)
         {
-            return [$"{parts[0]} - {parts[1]}"];
+            suggestions.Add($"{parts[0].Trim()} - {parts[1].Trim()}");
+            suggestions.Add($"@artist - {parts[0].Trim()} - {parts[1].Trim()}");
         }
+        else if (parts.Length > 2)
+        {
+            var mainPart = parts[0].Trim();
+            var secondPart = parts[1].Trim();
+            var remainingParts = string.Join(" ", parts[2..]).Trim();
 
-        // 5. More than 2 segments, fuse the ones following the first one in-place
-        // Artist - Track - Something - Else
-        // vvvv
-        // Artist - Track (Something Else)
-        
-        var tail = parts[1..];
-        var fused = string.Join(" ", tail);
-        
-        return [$"{parts[0]} - ({fused})"];
+            suggestions.Add($"{mainPart} - {secondPart}");
+            suggestions.Add($"@artist - {mainPart} - {secondPart} {remainingParts}");
+        }
+    }
+
+    private void AppendSuggestion_SeparatorlessAndIncomplete(List<string> suggestions, string name)
+    {
+        var computed = WhitespaceCompressorRegex().Replace(name, " ").Trim();
+        var parts = computed.Split(' ');
+
+        if (name.Contains('-')) return; // Skip if the name already contains a dash
+
+        if (parts.Length == 1)
+        {
+            suggestions.Add($"@artist - {parts[0].Trim()}");
+        }
+        else if (parts.Length == 2)
+        {
+            suggestions.Add($"{parts[0].Trim()} - {parts[1].Trim()}");
+            suggestions.Add($"@artist - {parts[0].Trim()} {parts[1].Trim()}");
+        }
+        else if (parts.Length > 2)
+        {
+            var firstPart = parts[0].Trim();
+            var secondPart = parts[1].Trim();
+            var remainingParts = string.Join(" ", parts[2..]).Trim();
+
+            suggestions.Add($"{firstPart} - {string.Join(" ", parts[1..]).Trim()}");
+            suggestions.Add($"{firstPart} - {secondPart} ({remainingParts})");
+            suggestions.Add($"{firstPart} {secondPart} - {remainingParts}");
+            suggestions.Add($"@artist - {computed}");
+        }
     }
 }
