@@ -42,7 +42,7 @@ public partial class BulkRenameViewModel : ObservableObject
     /// </summary>
     /// <param name="name">The stem to give the file</param>
     [RelayCommand]
-    private async Task Apply(string name)
+    private void Apply(string name)
     {
         // TODO: Rename the file to the selected name
         SkipByCommand.Execute(1);

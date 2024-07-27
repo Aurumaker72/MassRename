@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassRename.ViewModels", "Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassRename.Services", "MassRename.Services\MassRename.Services.csproj", "{DDA8C18C-515F-437A-A22B-5BE0A1D52657}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassRename.ViewModels.Tests", "MassRename.ViewModels.Tests\MassRename.ViewModels.Tests.csproj", "{AA9E68D3-CD70-47BB-B6C3-96E5A7C74F30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{DDA8C18C-515F-437A-A22B-5BE0A1D52657}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDA8C18C-515F-437A-A22B-5BE0A1D52657}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDA8C18C-515F-437A-A22B-5BE0A1D52657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA9E68D3-CD70-47BB-B6C3-96E5A7C74F30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA9E68D3-CD70-47BB-B6C3-96E5A7C74F30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA9E68D3-CD70-47BB-B6C3-96E5A7C74F30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA9E68D3-CD70-47BB-B6C3-96E5A7C74F30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
