@@ -55,8 +55,6 @@ public partial class BulkRenameViewModel : ObservableObject
     [RelayCommand]
     private void SkipBy(int entries)
     {
-        entries = Math.Max(entries, 0);
-
         if (CurrentIndex + entries >= FileCount)
         {
             _navigationService.SwitchTo(null);
