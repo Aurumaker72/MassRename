@@ -71,17 +71,59 @@ public class BulkRenameViewModel_Tests
     }
 
     [Theory]
+    
+    // Invalid cases: No valid suggestions 
+    [InlineData("", new string[] { })]
+    [InlineData(" ", new string[] { })]
     [InlineData("-", new string[] { })]
     [InlineData(" -", new string[] { })]
     [InlineData(" - ", new string[] { })]
     [InlineData(" -  ", new string[] { })]
-    [InlineData("Lorem - Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
-    [InlineData("Lorem -Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
-    [InlineData("Lorem-Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
-    [InlineData("Lorem  -    Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
-    [InlineData("Lorem Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem Ipsum" })]
-    [InlineData("Lorem", new[] { "@artist - Lorem" })]
-    [InlineData("Lorem Ipsum Dolor", new[] { "Lorem - Ipsum Dolor", "Lorem - Ipsum (Dolor)", "Lorem Ipsum - Dolor", "@artist - Lorem Ipsum Dolor" })]
+    
+    // Dash-separated segments with formatting variations
+    [InlineData("Lorem - Ipsum", new[]
+    {
+        "Lorem - Ipsum", 
+        "@artist - Lorem - Ipsum"
+    })]
+    [InlineData("Lorem -Ipsum", new[]
+    {
+        "Lorem - Ipsum", 
+        "@artist - Lorem - Ipsum"
+    })]
+    [InlineData("Lorem-Ipsum", new[]
+    {
+        "Lorem - Ipsum", 
+        "@artist - Lorem - Ipsum"
+    })]
+    [InlineData("Lorem  -    Ipsum", new[]
+    {
+        "Lorem - Ipsum", 
+        "@artist - Lorem - Ipsum"
+    })]
+    [InlineData("Lorem - Ipsum Dolor", new[]
+    {
+        "Lorem - Ipsum Dolor", 
+        "@artist - Lorem - Ipsum Dolor"
+    })]
+    
+    // Separatorless format and incomplete variations
+    [InlineData("Lorem Ipsum", new[]
+    {
+        "Lorem - Ipsum",
+        "@artist - Lorem Ipsum"
+    })]
+    [InlineData("Lorem", new[]
+    {
+        "@artist - Lorem"
+    })]
+    [InlineData("Lorem Ipsum Dolor", new[]
+    {
+        "Lorem - Ipsum Dolor", 
+        "Lorem - Ipsum (Dolor)", 
+        "Lorem Ipsum - Dolor", 
+        "@artist - Lorem Ipsum Dolor"
+    })]
     public void Test_ValidateSuggestions(string name, ICollection<string> suggestions)
     {
         var bulkRenameViewModel = new BulkRenameViewModel([name], null);
