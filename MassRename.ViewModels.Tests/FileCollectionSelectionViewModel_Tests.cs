@@ -8,17 +8,17 @@ namespace MassRename.ViewModels.Tests;
 public class FileCollectionSelectionViewModel_Tests
 {
     [Fact]
-    public async Task Test_BrowseFilePickerNullResultCallsViewDialogServiceWithError()
+    public async Task Test_BrowseFilePickerNullResultCallsDialogServiceWithError()
     {
         var filePickerService = Substitute.For<IFilePickerService>();
-        var viewDialogService = Substitute.For<IViewDialogService>();
+        var dialogService = Substitute.For<IDialogService>();
 
         filePickerService.ShowOpenFilePickerAsync(allowMultiple: true).Returns((string[]?)null);
 
-        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, viewDialogService, null);
+        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, dialogService, null);
         await fileCollectionSelectionViewModel.BrowseCommand.ExecuteAsync(null);
 
-        await viewDialogService.Received(1).ShowMessageDialog(Arg.Is<MessageDialogType>(x => x == MessageDialogType.Error), Arg.Any<string>());
+        await dialogService.Received(1).ShowMessageDialog(Arg.Is<MessageDialogType>(x => x == MessageDialogType.Error), Arg.Any<string>());
     }
 
     [Theory]
@@ -27,11 +27,11 @@ public class FileCollectionSelectionViewModel_Tests
     public async Task Test_BrowseStoresCorrectDataIntoFileCollections(params string[] files)
     {
         var filePickerService = Substitute.For<IFilePickerService>();
-        var viewDialogService = Substitute.For<IViewDialogService>();
+        var dialogService = Substitute.For<IDialogService>();
 
         filePickerService.ShowOpenFilePickerAsync(allowMultiple: true).Returns(files);
 
-        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, viewDialogService, null);
+        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, dialogService, null);
         await fileCollectionSelectionViewModel.BrowseCommand.ExecuteAsync(null);
 
         Assert.Equal(files, fileCollectionSelectionViewModel.Files);
@@ -44,11 +44,11 @@ public class FileCollectionSelectionViewModel_Tests
     public async Task Test_SelectAllWorks(params string[] files)
     {
         var filePickerService = Substitute.For<IFilePickerService>();
-        var viewDialogService = Substitute.For<IViewDialogService>();
+        var dialogService = Substitute.For<IDialogService>();
 
         filePickerService.ShowOpenFilePickerAsync(allowMultiple: true).Returns(files);
 
-        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, viewDialogService, null);
+        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, dialogService, null);
         await fileCollectionSelectionViewModel.BrowseCommand.ExecuteAsync(null);
 
         fileCollectionSelectionViewModel.SelectAllCommand.Execute(null);
@@ -63,11 +63,11 @@ public class FileCollectionSelectionViewModel_Tests
     public async Task Test_ClearAllWorks(params string[] files)
     {
         var filePickerService = Substitute.For<IFilePickerService>();
-        var viewDialogService = Substitute.For<IViewDialogService>();
+        var dialogService = Substitute.For<IDialogService>();
 
         filePickerService.ShowOpenFilePickerAsync(allowMultiple: true).Returns(files);
 
-        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, viewDialogService, null);
+        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, dialogService, null);
         await fileCollectionSelectionViewModel.BrowseCommand.ExecuteAsync(null);
 
         fileCollectionSelectionViewModel.ClearAllCommand.Execute(null);
@@ -84,11 +84,11 @@ public class FileCollectionSelectionViewModel_Tests
     public async Task Test_ClearSelectedWorks(string[] selected, string[] files, string[] expected)
     {
         var filePickerService = Substitute.For<IFilePickerService>();
-        var viewDialogService = Substitute.For<IViewDialogService>();
+        var dialogService = Substitute.For<IDialogService>();
 
         filePickerService.ShowOpenFilePickerAsync(allowMultiple: true).Returns(files);
 
-        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, viewDialogService, null);
+        FileCollectionSelectionViewModel fileCollectionSelectionViewModel = new(filePickerService, dialogService, null);
         await fileCollectionSelectionViewModel.BrowseCommand.ExecuteAsync(null);
 
         fileCollectionSelectionViewModel.SelectedFiles.Clear();

@@ -3,9 +3,9 @@ using MassRename.Services.Abstractions;
 namespace MassRename.Services;
 
 /// <summary>
-/// Interface exposing custom dialogs provided by the view.
+/// Interface exposing dialog functionality.
 /// </summary>
-public interface IViewDialogService
+public interface IDialogService
 {
     /// <summary>
     /// Shows a message dialog with no choices 

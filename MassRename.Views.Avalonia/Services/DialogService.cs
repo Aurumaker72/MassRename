@@ -4,11 +4,11 @@ using MassRename.Services.Abstractions;
 
 namespace MassRename.Views.Avalonia.Services;
 
-public class ViewDialogService : IViewDialogService
+public class DialogService : IDialogService
 {
-    private ViewDialogService() { }
+    private DialogService() { }
 
-    public static ViewDialogService Instance { get; } = new();
+    public static DialogService Instance { get; } = new();
 
     
     public async Task ShowMessageDialog(MessageDialogType type, string content)

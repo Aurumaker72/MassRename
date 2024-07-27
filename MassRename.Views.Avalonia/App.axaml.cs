@@ -36,7 +36,7 @@ public partial class App : Application, INavigationService
         if (viewModel is null)
         {
             mainWindow.DataContext = new FileCollectionSelectionViewModel(FilePickerService.Instance,
-                ViewDialogService.Instance, this);
+                DialogService.Instance, this);
 
             return;
         }

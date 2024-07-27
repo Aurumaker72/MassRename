@@ -13,14 +13,14 @@ public partial class FileCollectionSelectionViewModel : ObservableObject
     [ObservableProperty] private ObservableCollection<string> _selectedFiles = [];
 
     private readonly IFilePickerService _filePickerService;
-    private readonly IViewDialogService _viewDialogService;
+    private readonly IDialogService _dialogService;
     private readonly INavigationService _navigationService;
     
-    public FileCollectionSelectionViewModel(IFilePickerService filePickerService, IViewDialogService viewDialogService,
+    public FileCollectionSelectionViewModel(IFilePickerService filePickerService, IDialogService dialogService,
         INavigationService navigationService)
     {
         _filePickerService = filePickerService;
-        _viewDialogService = viewDialogService;
+        _dialogService = dialogService;
         _navigationService = navigationService;
     }
 
@@ -35,7 +35,7 @@ public partial class FileCollectionSelectionViewModel : ObservableObject
 
         if (files is null)
         {
-            await _viewDialogService.ShowMessageDialog(MessageDialogType.Error,
+            await _dialogService.ShowMessageDialog(MessageDialogType.Error,
                 "There was an error while selecting files.\nPlease try again.");
             return;
         }
