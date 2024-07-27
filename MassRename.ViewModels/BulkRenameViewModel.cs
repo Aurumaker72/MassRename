@@ -80,7 +80,12 @@ public partial class BulkRenameViewModel : ObservableObject
     private List<string> ComputeSuggestions(string name)
     {
         List<string> suggestions = [];
-
+        
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return suggestions;
+        }
+        
         AppendSuggestion_DashSeparated(suggestions, name);
         AppendSuggestion_SeparatorlessAndIncomplete(suggestions, name);
 
