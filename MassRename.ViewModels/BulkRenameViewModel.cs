@@ -83,7 +83,6 @@ public partial class BulkRenameViewModel : ObservableObject
 
         suggestions.AddRange(ComputeSuggestion_SpacedFused(name));
 
-        suggestions.Add(name);
         return suggestions;
     }
 
