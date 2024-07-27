@@ -71,10 +71,10 @@ public class BulkRenameViewModel_Tests
     }
 
     [Theory]
-    [InlineData("-", new[] { "" })]
-    [InlineData(" -", new[] { "" })]
-    [InlineData(" - ", new[] { "" })]
-    [InlineData(" -  ", new[] { "" })]
+    [InlineData("-", new string[] { })]
+    [InlineData(" -", new string[] { })]
+    [InlineData(" - ", new string[] { })]
+    [InlineData(" -  ", new string[] { })]
     [InlineData("Lorem - Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
     [InlineData("Lorem -Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
     [InlineData("Lorem-Ipsum", new[] { "Lorem - Ipsum", "@artist - Lorem - Ipsum" })]
