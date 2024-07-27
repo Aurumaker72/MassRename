@@ -128,6 +128,6 @@ public class BulkRenameViewModel_Tests
     {
         var bulkRenameViewModel = new BulkRenameViewModel([name], null);
 
-        Assert.Equal(bulkRenameViewModel.NameSuggestions, suggestions);
+        Assert.Equal(suggestions, bulkRenameViewModel.NameSuggestions);
     }
 }
