@@ -71,7 +71,22 @@ public class BulkRenameViewModel_Tests
     }
 
     [Theory]
-    
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, 0)]
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, 1)]
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, 2)]
+    [InlineData(new[] { "abc", "def", "ghi", "jkl" }, 3)]
+    public void Test_CurrentItemMatchesDataAfterSkip(IList<string> items, int skipSize)
+    {
+        var navigationService = Substitute.For<INavigationService>();
+        var bulkRenameViewModel = new BulkRenameViewModel(items.ToList(), navigationService);
+
+        bulkRenameViewModel.SkipByCommand.Execute(skipSize);
+
+        Assert.Equal(items[skipSize], bulkRenameViewModel.CurrentFile);
+    }
+
+    [Theory]
+
     // Invalid cases: No valid suggestions 
     [InlineData("", new string[] { })]
     [InlineData(" ", new string[] { })]
@@ -79,34 +94,34 @@ public class BulkRenameViewModel_Tests
     [InlineData(" -", new string[] { })]
     [InlineData(" - ", new string[] { })]
     [InlineData(" -  ", new string[] { })]
-    
+
     // Dash-separated segments with formatting variations
     [InlineData("Lorem - Ipsum", new[]
     {
-        "Lorem - Ipsum", 
+        "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
     })]
     [InlineData("Lorem -Ipsum", new[]
     {
-        "Lorem - Ipsum", 
+        "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
     })]
     [InlineData("Lorem-Ipsum", new[]
     {
-        "Lorem - Ipsum", 
+        "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
     })]
     [InlineData("Lorem  -    Ipsum", new[]
     {
-        "Lorem - Ipsum", 
+        "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
     })]
     [InlineData("Lorem - Ipsum Dolor", new[]
     {
-        "Lorem - Ipsum Dolor", 
+        "Lorem - Ipsum Dolor",
         "@artist - Lorem - Ipsum Dolor"
     })]
-    
+
     // Separatorless format and incomplete variations
     [InlineData("Lorem Ipsum", new[]
     {
@@ -119,9 +134,9 @@ public class BulkRenameViewModel_Tests
     })]
     [InlineData("Lorem Ipsum Dolor", new[]
     {
-        "Lorem - Ipsum Dolor", 
-        "Lorem - Ipsum (Dolor)", 
-        "Lorem Ipsum - Dolor", 
+        "Lorem - Ipsum Dolor",
+        "Lorem - Ipsum (Dolor)",
+        "Lorem Ipsum - Dolor",
         "@artist - Lorem Ipsum Dolor"
     })]
     public void Test_ValidateSuggestions(string name, ICollection<string> suggestions)
