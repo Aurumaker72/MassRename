@@ -95,6 +95,10 @@ public partial class BulkRenameViewModel : ObservableObject
     private void AppendSuggestion_DashSeparated(List<string> suggestions, string name)
     {
         var computed = WhitespaceCompressorRegex().Replace(name, " ").Trim();
+        if (string.IsNullOrWhiteSpace(computed) || computed == "-")
+        {
+            return;
+        }
         var parts = computed.Split('-');
 
         if (parts.Length == 2)
@@ -116,6 +120,10 @@ public partial class BulkRenameViewModel : ObservableObject
     private void AppendSuggestion_SeparatorlessAndIncomplete(List<string> suggestions, string name)
     {
         var computed = WhitespaceCompressorRegex().Replace(name, " ").Trim();
+        if (string.IsNullOrWhiteSpace(computed) || name.Contains('-'))
+        {
+            return;
+        }
         var parts = computed.Split(' ');
 
         if (name.Contains('-')) return; // Skip if the name already contains a dash
