@@ -8,16 +8,17 @@
              d:DesignHeight="550"
              x:Class="MassRename.Views.Avalonia.Controls.FileCollectionSelectionControl"
              x:DataType="viewModels:FileCollectionSelectionViewModel">
-    <Grid RowDefinitions="Auto, *, Auto">
-
-        <Grid ColumnDefinitions="*, Auto">
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        <TextBlock TextAlignment="Center" FontSize="16" Text="Select files"/>
+        
+        <Grid Margin="0 8 0 0" Grid.Row="1" ColumnDefinitions="*, Auto">
             <TextBox Margin="0 0 2 0" MinWidth="260" />
             <Button Grid.Column="1" Command="{Binding BrowseCommand}" Content="Browse..." />
         </Grid>
-        <ListBox Grid.Row="1" Margin="0 2 0 0" SelectionMode="Multiple"
+        <ListBox Grid.Row="2" Margin="0 2 0 0" SelectionMode="Multiple"
                  ItemsSource="{Binding Files}"
                  SelectedItems="{Binding SelectedFiles}" />
-        <Grid Grid.Row="2" Margin="0 2 0 0" ColumnDefinitions="*, Auto">
+        <Grid Grid.Row="3" Margin="0 2 0 0" ColumnDefinitions="*, Auto">
             <WrapPanel Orientation="Horizontal">
                 <Button Command="{Binding SelectAllCommand}" Content="Select All" />
                 <Button Margin="2 0 0 0" Command="{Binding ClearSelectedCommand}" Content="Clear Selected" />
