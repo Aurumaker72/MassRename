@@ -10,50 +10,54 @@
              x:Class="MassRename.Views.Avalonia.Controls.BulkRenameControl"
              x:DataType="viewModels:BulkRenameViewModel"
              Name="Root">
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" MaxWidth="320">
-        <TextBlock TextAlignment="Center" FontSize="16">
-            <Run Text="Renaming file" />
-            <Run Text="{Binding CurrentIndex, Converter={StaticResource AddConverter}, ConverterParameter=1}" />
-            <Run Text="out of" />
-            <Run Text="{Binding FileCount}" />
-        </TextBlock>
-        <TextBox Margin="0 8 0 0" MinWidth="320" IsReadOnly="True" Text="{Binding CurrentFile}" />
-        <ItemsControl Margin="0 6 0 0" ItemsSource="{Binding NameSuggestions}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Margin="0 2 0 0" HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Content="{Binding}"
-                            Command="{Binding #Root.((viewModels:BulkRenameViewModel)DataContext).ApplyCommand}"
-                            CommandParameter="{Binding}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+    <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBlock TextAlignment="Center" FontSize="16">
+                <Run Text="Renaming file" />
+                <Run Text="{Binding CurrentIndex, Converter={StaticResource AddConverter}, ConverterParameter=1}" />
+                <Run Text="out of" />
+                <Run Text="{Binding FileCount}" />
+            </TextBlock>
+            <TextBox Margin="0 8 0 0" IsReadOnly="True" Text="{Binding CurrentFile}" />
+            <ItemsControl Margin="0 6 0 0" ItemsSource="{Binding NameSuggestions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="0 2 0 0" HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Content="{Binding}"
+                                Command="{Binding #Root.((viewModels:BulkRenameViewModel)DataContext).ApplyCommand}"
+                                CommandParameter="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-        <Button Margin="0 2 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
-                Command="{Binding SkipByCommand}" Content="Keep original">
-            <Button.CommandParameter>
-                <x:Int32>1</x:Int32>
-            </Button.CommandParameter>
-        </Button>
+            <Button Margin="0 2 0 0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Command="{Binding SkipByCommand}" Content="Keep original">
+                <Button.CommandParameter>
+                    <x:Int32>1</x:Int32>
+                </Button.CommandParameter>
+            </Button>
 
-        <TextBlock Margin="0 8 0 0" Text="Choose an artist" TextAlignment="Center" />
-        <ScrollViewer Margin="0 6 0 0" MaxHeight="250">
-            <ListBox ItemsSource="{Binding KnownArtists}" SelectedItem="{Binding SelectedArtist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </ScrollViewer>
-        <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
-            <TextBox x:Name="ArtistTextBox" MaxLines="1" KeyUp="ArtistTextBox_OnKeyUp" Watermark="Artist" />
-            <Button Margin="2 0 0 0" Grid.Column="1" Content="Add" Click="AddArtistButton_OnClick" />
-        </Grid>
-        
-        <TextBlock Margin="0 8 0 0" Text="... or use a custom name" TextAlignment="Center" />
-
-        <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
-            <!-- TODO: Use watermark -->
-            <TextBox x:Name="CustomNameTextBox" MaxLines="1" KeyUp="CustomNameTextBox_OnKeyUp" />
-            <Button Margin="2 0 0 0" Grid.Column="1" Content="Apply" Click="ApplyButton_OnClick" />
-        </Grid>
+            <Expander Margin="0 6 0 0" HorizontalAlignment="Stretch" IsExpanded="True" Header="Artists">
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
+                    <ScrollViewer MaxHeight="250">
+                        <ListBox ItemsSource="{Binding KnownArtists}"
+                                 SelectedItem="{Binding SelectedArtist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </ScrollViewer>
+                    <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
+                        <TextBox x:Name="ArtistTextBox" MaxLines="1" KeyUp="ArtistTextBox_OnKeyUp" Watermark="Artist" />
+                        <Button Margin="2 0 0 0" Grid.Column="1" Content="Add" Click="AddArtistButton_OnClick" />
+                    </Grid>
+                </StackPanel>
+            </Expander>
 
 
-    </StackPanel>
+            <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
+                <TextBox x:Name="CustomNameTextBox" MaxLines="1" KeyUp="CustomNameTextBox_OnKeyUp"
+                         Watermark="Custom name" />
+                <Button Margin="2 0 0 0" Grid.Column="1" Content="Apply" Click="ApplyButton_OnClick" />
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
