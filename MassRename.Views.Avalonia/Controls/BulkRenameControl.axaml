@@ -37,7 +37,7 @@
             </Button.CommandParameter>
         </Button>
 
-        <TextBlock Margin="0 8 0 0" Opacity="50" Text="Choose an artist" TextAlignment="Center" />
+        <TextBlock Margin="0 8 0 0" Text="Choose an artist" TextAlignment="Center" />
         <ScrollViewer Margin="0 6 0 0" MaxHeight="250">
             <ListBox ItemsSource="{Binding KnownArtists}" SelectedItem="{Binding SelectedArtist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </ScrollViewer>
@@ -46,7 +46,7 @@
             <Button Margin="2 0 0 0" Grid.Column="1" Content="Add" Click="AddArtistButton_OnClick" />
         </Grid>
         
-        <TextBlock Margin="0 8 0 0" Opacity="50" Text="... or use a custom name" TextAlignment="Center" />
+        <TextBlock Margin="0 8 0 0" Text="... or use a custom name" TextAlignment="Center" />
 
         <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
             <!-- TODO: Use watermark -->

@@ -13,9 +13,9 @@
         d:DesignWidth="500"
         d:DesignHeight="550"
         x:DataType="system:Object"
-        Title="{Binding}">
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <ContentControl Content="{Binding}">
+        Title="MassRename">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8">
+        <TransitioningContentControl Content="{Binding}">
             <ContentControl.DataTemplates>
                 <DataTemplate DataType="viewModels:FileCollectionSelectionViewModel">
                     <controls:FileCollectionSelectionControl DataContext="{Binding}" />
@@ -24,6 +24,6 @@
                     <controls:BulkRenameControl DataContext="{Binding}" />
                 </DataTemplate>
             </ContentControl.DataTemplates>
-        </ContentControl>
+        </TransitioningContentControl>
     </Grid>
 </Window>
