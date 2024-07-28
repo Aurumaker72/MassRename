@@ -6,30 +6,6 @@ namespace MassRename.ViewModels.Tests;
 
 public class BulkRenameViewModel_Tests
 {
-    private static readonly Dictionary<string, List<string>> NameSuggestionMap = new()
-    {
-        { "-", [""] },
-        { " -", [""] },
-        { " - ", [""] },
-        { " -  ", [""] },
-        { "Lorem - Ipsum", ["Lorem - Ipsum", "@artist - Lorem - Ipsum"] },
-        { "Lorem -Ipsum", ["Lorem - Ipsum", "@artist - Lorem - Ipsum"] },
-        { "Lorem-Ipsum", ["Lorem - Ipsum", "@artist - Lorem - Ipsum"] },
-        { "Lorem  -    Ipsum", ["Lorem - Ipsum", "@artist - Lorem - Ipsum"] },
-        { "Lorem Ipsum", ["Lorem - Ipsum", "@artist - Lorem Ipsum"] },
-        { "Lorem", ["@artist - Lorem"] },
-        {
-            "Lorem Ipsum Dolor",
-            ["Lorem - Ipsum Dolor", "Lorem - Ipsum (Dolor)", "Lorem Ipsum - Dolor", "@artist - Lorem Ipsum Dolor"]
-        },
-    };
-
-    public static IEnumerable<object[]> SuggestionData =>
-        new List<object[]>
-        {
-            new object[] { NameSuggestionMap }
-        };
-
     [Fact]
     public void Test_ApplyAdvancesIndexWhenNotAtEnd()
     {
@@ -118,61 +94,63 @@ public class BulkRenameViewModel_Tests
     [Theory]
 
     // Invalid cases: No valid suggestions 
-    [InlineData("", new string[] { })]
-    [InlineData(" ", new string[] { })]
-    [InlineData("-", new string[] { })]
-    [InlineData(" -", new string[] { })]
-    [InlineData(" - ", new string[] { })]
-    [InlineData(" -  ", new string[] { })]
+    [InlineData("", new string[] { }, "Someone")]
+    [InlineData(" ", new string[] { }, "Someone")]
+    [InlineData("-", new string[] { }, "Someone")]
+    [InlineData(" -", new string[] { }, "Someone")]
+    [InlineData(" - ", new string[] { }, "Someone")]
+    [InlineData(" -  ", new string[] { }, "Someone")]
 
     // Dash-separated segments with formatting variations
     [InlineData("Lorem - Ipsum", new[]
     {
         "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
-    })]
+    }, "Someone")]
     [InlineData("Lorem -Ipsum", new[]
     {
         "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
-    })]
+    }, "Someone")]
     [InlineData("Lorem-Ipsum", new[]
     {
         "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
-    })]
+    }, "Someone")]
     [InlineData("Lorem  -    Ipsum", new[]
     {
         "Lorem - Ipsum",
         "@artist - Lorem - Ipsum"
-    })]
+    }, "Someone")]
     [InlineData("Lorem - Ipsum Dolor", new[]
     {
         "Lorem - Ipsum Dolor",
         "@artist - Lorem - Ipsum Dolor"
-    })]
+    }, "Someone")]
 
     // Separatorless format and incomplete variations
     [InlineData("Lorem Ipsum", new[]
     {
         "Lorem - Ipsum",
         "@artist - Lorem Ipsum"
-    })]
+    }, "Someone")]
     [InlineData("Lorem", new[]
     {
         "@artist - Lorem"
-    })]
+    }, "Someone")]
     [InlineData("Lorem Ipsum Dolor", new[]
     {
         "Lorem - Ipsum Dolor",
         "Lorem - Ipsum (Dolor)",
         "Lorem Ipsum - Dolor",
         "@artist - Lorem Ipsum Dolor"
-    })]
-    public void Test_ValidateSuggestions(string name, ICollection<string> suggestions)
+    }, "Someone")]
+    public void Test_ValidateSuggestions(string name, ICollection<string> suggestions, string artist)
     {
         var bulkRenameViewModel = new BulkRenameViewModel([name], null);
 
-        Assert.Equal(suggestions, bulkRenameViewModel.NameSuggestions);
+        bulkRenameViewModel.SelectedArtist = artist;
+        
+        Assert.Equal(suggestions.Select(x => x.Replace("@artist", artist)), bulkRenameViewModel.NameSuggestions);
     }
 }

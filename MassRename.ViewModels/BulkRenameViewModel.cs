@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -27,6 +28,16 @@ public partial class BulkRenameViewModel : ObservableObject
     /// </summary>
     public string[] NameSuggestions { get; private set; }
 
+    /// <summary>
+    /// All artist names which have appeared in the queue or have been explicitly added.
+    /// </summary>
+    public ObservableCollection<string> KnownArtists { get; } = [ "Unknown Artist" ];
+
+    /// <summary>
+    /// The currently selected artist override.
+    /// </summary>
+    [ObservableProperty] private string _selectedArtist = "Unknown Artist";
+    
     private readonly IReadOnlyList<string> _files;
     private readonly INavigationService _navigationService;
 
@@ -73,6 +84,13 @@ public partial class BulkRenameViewModel : ObservableObject
         OnPropertyChanged(nameof(NameSuggestions));
     }
 
+    partial void OnSelectedArtistChanged(string _)
+    {
+        // Suggestions depend on the selected artist, so we'll recompute those.
+        NameSuggestions = ComputeSuggestions(CurrentFile).ToArray();
+        OnPropertyChanged(nameof(NameSuggestions));
+    }
+    
     #region Suggestion generation
 
     [GeneratedRegex(@"\s{2,}")]
@@ -111,7 +129,7 @@ public partial class BulkRenameViewModel : ObservableObject
         if (parts.Length == 2)
         {
             suggestions.Add($"{parts[0].Trim()} - {parts[1].Trim()}");
-            suggestions.Add($"@artist - {parts[0].Trim()} - {parts[1].Trim()}");
+            suggestions.Add($"{SelectedArtist} - {parts[0].Trim()} - {parts[1].Trim()}");
         }
         else if (parts.Length > 2)
         {
@@ -120,7 +138,7 @@ public partial class BulkRenameViewModel : ObservableObject
             var remainingParts = string.Join(" ", parts[2..]).Trim();
 
             suggestions.Add($"{mainPart} - {secondPart}");
-            suggestions.Add($"@artist - {mainPart} - {secondPart} {remainingParts}");
+            suggestions.Add($"{SelectedArtist} - {mainPart} - {secondPart} {remainingParts}");
         }
     }
 
@@ -133,17 +151,17 @@ public partial class BulkRenameViewModel : ObservableObject
         }
 
         var parts = computed.Split(' ');
-
-        if (name.Contains('-')) return; // Skip if the name already contains a dash
+        
+        if (name.Contains('-')) return;
 
         if (parts.Length == 1)
         {
-            suggestions.Add($"@artist - {parts[0].Trim()}");
+            suggestions.Add($"{SelectedArtist} - {parts[0].Trim()}");
         }
         else if (parts.Length == 2)
         {
             suggestions.Add($"{parts[0].Trim()} - {parts[1].Trim()}");
-            suggestions.Add($"@artist - {parts[0].Trim()} {parts[1].Trim()}");
+            suggestions.Add($"{SelectedArtist} - {parts[0].Trim()} {parts[1].Trim()}");
         }
         else if (parts.Length > 2)
         {
@@ -154,7 +172,7 @@ public partial class BulkRenameViewModel : ObservableObject
             suggestions.Add($"{firstPart} - {string.Join(" ", parts[1..]).Trim()}");
             suggestions.Add($"{firstPart} - {secondPart} ({remainingParts})");
             suggestions.Add($"{firstPart} {secondPart} - {remainingParts}");
-            suggestions.Add($"@artist - {computed}");
+            suggestions.Add($"{SelectedArtist} - {computed}");
         }
     }
 

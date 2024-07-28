@@ -28,4 +28,25 @@ public partial class BulkRenameControl : UserControl
             ApplyButton_OnClick(null, null!);
         }
     }
+
+    private void AddArtistButton_OnClick(object? _, RoutedEventArgs __)
+    {
+        var artist = ArtistTextBox.Text;
+
+        if (artist is null)
+        {
+            return;
+        }
+        
+        BulkRenameViewModel.KnownArtists.Remove(artist);
+        BulkRenameViewModel.KnownArtists.Insert(0, artist);
+    }
+    
+    private void ArtistTextBox_OnKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            AddArtistButton_OnClick(null, null!);
+        }
+    }
 }

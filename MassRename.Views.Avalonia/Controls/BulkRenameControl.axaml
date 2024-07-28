@@ -18,7 +18,6 @@
             <Run Text="{Binding FileCount}" />
         </TextBlock>
         <TextBox Margin="0 8 0 0" MinWidth="320" IsReadOnly="True" Text="{Binding CurrentFile}" />
-        <TextBlock Margin="0 8 0 0" Text="Rename to..." TextAlignment="Center" />
         <ItemsControl Margin="0 6 0 0" ItemsSource="{Binding NameSuggestions}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -37,12 +36,24 @@
                 <x:Int32>1</x:Int32>
             </Button.CommandParameter>
         </Button>
+
+        <TextBlock Margin="0 8 0 0" Opacity="50" Text="Choose an artist" TextAlignment="Center" />
+        <ScrollViewer Margin="0 6 0 0" MaxHeight="250">
+            <ListBox ItemsSource="{Binding KnownArtists}" SelectedItem="{Binding SelectedArtist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </ScrollViewer>
+        <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
+            <TextBox x:Name="ArtistTextBox" MaxLines="1" KeyUp="ArtistTextBox_OnKeyUp" Watermark="Artist" />
+            <Button Margin="2 0 0 0" Grid.Column="1" Content="Add" Click="AddArtistButton_OnClick" />
+        </Grid>
         
         <TextBlock Margin="0 8 0 0" Opacity="50" Text="... or use a custom name" TextAlignment="Center" />
 
         <Grid Margin="0 8 0 0" ColumnDefinitions="*, Auto">
+            <!-- TODO: Use watermark -->
             <TextBox x:Name="CustomNameTextBox" MaxLines="1" KeyUp="CustomNameTextBox_OnKeyUp" />
             <Button Margin="2 0 0 0" Grid.Column="1" Content="Apply" Click="ApplyButton_OnClick" />
         </Grid>
+
+
     </StackPanel>
 </UserControl>
